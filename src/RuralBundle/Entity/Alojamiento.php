@@ -70,6 +70,15 @@ class Alojamiento
      */
     private $servicios;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Propietarios", mappedBy="alojamiento")
+     */
+    private $propietarios;
+
+    /*public function __toString()
+    {
+        return $this->foo;
+    }*/
 
     /**
      * Get id
@@ -249,4 +258,3 @@ class Alojamiento
         return $this->servicios;
     }
 }
-
