@@ -5,7 +5,7 @@ namespace RuralBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use RuralBundle\Entity\Alojamiento;
-use TiendaBundle\Form\AlojamientoType;
+use RuralBundle\Form\AlojamientoType;
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -83,20 +83,26 @@ class DefaultController extends Controller
       return $this->render('RuralBundle:Default:form.html.twig',array("form"=>$form->createView()));
   }
 
-    /**
-     * @Route("/formdelete/{id}", name="formdelete")
-     */
-  public function editAction(Request $request, $id)
-  {
+  /**
+   * @Route("/formdelete/{id}", name="formdelete")
+   */
 
-       $em = $this->getDoctrine()->getManager();
-       $user = $em->getRepository("RuralBundle:Alojamiento")->find($id);
+ public function editAction($id)
+ {
+      $em = $this->getDoctrine()->getEntityManager();
+      $alojamientos = $em->getRepository("RuralBundle:Alojamiento");
 
-       if(!$user){throw $this->createNotFoundException("El usuario con id $id no existe");}
+      $alojamiento = $alojamientos->find($id);
+      $em->remove($alojamiento);
+      $flush=$em->flush();
 
-       $editForm = $this->createForm(AlojamientoType::class, $user);
-       $editForm->remove('nomAlojamiento');
-   }
+      if ($flush == null) {
+          echo "Post se ha borrado correctamente";
+      } else {
+          echo "El post no se ha borrado";
+      }
+      return $this->render('RuralBundle:Default:comarca.html.twig',array("alojamientos"=>$alojamiento));
+  }
 
   /**
    * @Route("/alojamiento", name="alojamiento")

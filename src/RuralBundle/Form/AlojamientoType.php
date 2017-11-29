@@ -21,7 +21,7 @@ class AlojamientoType extends AbstractType
           ->add('descrip')
           ->add('numEstancia')
           ->add('numPers')
-          ->add('servicios');
+          ->add('servicios')
           ->add('guardar',SubmitType::class);
     }
 
